@@ -9,7 +9,6 @@ require("dotenv").config();
 app.use(express.json());
 app.use(cors());
 
-
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.0o9qayn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -25,6 +24,16 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
+
+      const ArtCollections = client.db("artDB").collection("Arts");
+      
+      // create a post
+    app.post("/art", async (req, res) => {
+      const art = req.body;
+      console.log(art);
+      const result = await ArtCollections.insertOne(art);
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
