@@ -84,6 +84,14 @@ async function run() {
       const result = await ArtCollections.updateOne(filter, updateArt, options);
       res.send(result);
     });
+
+    // Delete oparetion
+    app.delete("/updateArts/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const result = await ArtCollections.deleteOne(filter);
+      res.send(result);
+    });
     app.get("/");
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
