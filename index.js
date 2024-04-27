@@ -25,13 +25,19 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-      const ArtCollections = client.db("artDB").collection("Arts");
-      
-      // create a post
+    const ArtCollections = client.db("artDB").collection("Arts");
+
+    // create a post
     app.post("/art", async (req, res) => {
       const art = req.body;
       console.log(art);
       const result = await ArtCollections.insertOne(art);
+      res.send(result);
+    });
+
+    app.get("/art", async (req, res) => {
+      const cursor = ArtCollections.find();
+      const result = await cursor.toArray();
       res.send(result);
     });
     // Send a ping to confirm a successful connection
