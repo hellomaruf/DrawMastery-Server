@@ -26,6 +26,9 @@ async function run() {
     // await client.connect();
 
     const ArtCollections = client.db("artDB").collection("Arts");
+    const ArtCatetoryCollection = client
+      .db("ArtCategoryDB")
+      .collection("ArtCategory");
 
     // create a post
     app.post("/art", async (req, res) => {
@@ -98,6 +101,14 @@ async function run() {
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
+
+    // Manage data for art category**************
+
+    app.get("/artCategory", async (req, res) => {
+      const cursor = ArtCatetoryCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
