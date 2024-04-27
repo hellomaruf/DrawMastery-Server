@@ -54,6 +54,37 @@ async function run() {
       const result = await ArtCollections.find(filter).toArray();
       res.send(result);
     });
+
+    app.get("/updateArts/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const result = await ArtCollections.findOne(filter);
+      res.send(result);
+    });
+
+    // update arts
+    app.put("/updateArts/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const art = req.body;
+      const updateArt = {
+        $set: {
+          itemName: art.itemName,
+          subcategory: art.subcategory,
+          price: art.price,
+          rating: art.rating,
+          time: art.time,
+          photo: art.photo,
+          description: art.description,
+          customization: art.customization,
+          stock: art.stock,
+        },
+      };
+      const result = await ArtCollections.updateOne(filter, updateArt, options);
+      res.send(result);
+    });
+    app.get("/");
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
