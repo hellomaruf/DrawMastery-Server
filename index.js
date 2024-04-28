@@ -95,12 +95,6 @@ async function run() {
       const result = await ArtCollections.deleteOne(filter);
       res.send(result);
     });
-    app.get("/");
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
 
     // Manage data for art category**************
 
@@ -109,6 +103,20 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+
+    app.get("/artCategory/:name", async (req, res) => {
+      const name = req.params.name;
+      const filter = { item_name: name };
+      const result = await ArtCatetoryCollection.find(filter).toArray();
+      res.send(result);
+    });
+
+    app.get("/");
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
